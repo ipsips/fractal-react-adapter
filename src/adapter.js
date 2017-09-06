@@ -90,12 +90,17 @@ var aliases = {};
  */
 function registerBabel(app, config) {
   // Extract module aliases (e.g. '@button': '/path/to/button.jsx')
-  app.components.items().forEach(function(item) {
-    aliases['@' + item.handle] = item.config.dir;
-  });
+  app.components.items().forEach(makeAlias);
 
   // Hook up that babel
   babelReg(config);
+}
+
+function makeAlias(item) {
+  if (item.isCollection)
+    item.items().forEach(makeAlias);
+  else
+    aliases['@' + item.handle] = item.config.viewPath;
 }
 
 
