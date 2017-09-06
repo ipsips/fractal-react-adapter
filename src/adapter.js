@@ -111,6 +111,9 @@ function makeAlias(item) {
 module.exports = function(config = {}) {
   const options = _.merge({}, DEFAULT_OPTIONS, config);
 
+  if (options.aliases)
+    _.merge(aliases, options.aliases)
+
   // Add resolver plugin aliases to babel config
   // https://github.com/tleunen/babel-plugin-module-resolver
   _.assign(options.babelConfig, {
