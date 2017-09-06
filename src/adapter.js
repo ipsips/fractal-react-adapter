@@ -123,7 +123,15 @@ module.exports = function(config = {}) {
 
   return {
     register(source, app) {
-      const componentsReady = () => { registerBabel(app, options.babelConfig) };
+      const componentsReady = function (data) {
+        if (data && data.event == 'change') {
+          const resolved = require.resolve(data.path);
+          if (resolved)
+            delete require.cache[resolved];
+        }
+
+        registerBabel(app, options.babelConfig);
+      };
       app.components.on('loaded', componentsReady);
       app.components.on('updated', componentsReady);
 
