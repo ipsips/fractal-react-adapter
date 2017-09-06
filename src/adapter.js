@@ -72,6 +72,7 @@ function setEnv(key, value, context) {
   }
 }
 
+var aliases = {};
 
 /*
  * Register Babel
@@ -89,19 +90,8 @@ function setEnv(key, value, context) {
  */
 function registerBabel(app, config) {
   // Extract module aliases (e.g. '@button': '/path/to/button.jsx')
-  var aliases = {};
   app.components.items().forEach(function(item) {
     aliases['@' + item.handle] = item.viewPath;
-  });
-
-  // Add resolver plugin aliases to babel config
-  // https://github.com/tleunen/babel-plugin-module-resolver
-  _.merge(config, {
-    plugins: [
-      ["module-resolver", {
-        "alias": aliases
-      }]
-    ]
   });
 
   // Hook up that babel
@@ -115,6 +105,16 @@ function registerBabel(app, config) {
  */
 module.exports = function(config = {}) {
   const options = _.merge({}, DEFAULT_OPTIONS, config);
+
+  // Add resolver plugin aliases to babel config
+  // https://github.com/tleunen/babel-plugin-module-resolver
+  _.assign(options.babelConfig, {
+    plugins: (options.babelConfig.plugins || []).concat([
+      ["module-resolver", {
+        "alias": aliases
+      }]
+    ])
+  });
 
   return {
     register(source, app) {
