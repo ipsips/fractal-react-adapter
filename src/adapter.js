@@ -96,7 +96,7 @@ function registerBabel(app, config) {
 
   // Add resolver plugin aliases to babel config
   // https://github.com/tleunen/babel-plugin-module-resolver
-  _.assign(config, {
+  _.merge(config, {
     plugins: [
       ["module-resolver", {
         "alias": aliases
@@ -114,7 +114,7 @@ function registerBabel(app, config) {
  * --------------------
  */
 module.exports = function(config = {}) {
-  const options = _.assign({}, DEFAULT_OPTIONS, config);
+  const options = _.merge({}, DEFAULT_OPTIONS, config);
 
   return {
     register(source, app) {
