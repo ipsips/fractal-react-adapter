@@ -60,7 +60,7 @@ class ReactAdapter extends Adapter {
     delete require.cache[path];
     const component = require(path);
     const element = React.createElement(component, context);
-    const renderedHtml = (meta.self && meta.self.prepend || '') + this._renderMethod(element) + (meta.self && meta.self.append || '');
+    const renderedHtml = (meta.self && meta.self.meta && meta.self.meta.prepend || '') + this._renderMethod(element) + (meta.self && meta.self.meta && meta.self.meta.append || '');
     const prettyHtml = prettyPrint(renderedHtml);
 
     return Promise.resolve(prettyHtml);
