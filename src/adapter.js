@@ -39,6 +39,7 @@ class ReactAdapter extends Adapter {
   constructor(source, app, options) {
     super(null, source);
     this._app = app;
+    this.options = options;
 
     if(options.renderMethod == 'renderToString') {
       this._renderMethod = ReactDOM.renderToString;
